@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehema Care Services | Caring with Compassion</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =================== -->
+    <!-- ====== HEADER ===== -->
+    <!-- =================== -->
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10L10 45H20V90H80V45H90L50 10Z" stroke="#005A9C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M50 75C50 75 30 60 30 45C30 35 38 30 50 40C62 30 70 35 70 45C70 60 50 75 50 75Z" fill="#4CAF50"/>
+                    </svg>
+                    <div class="logo-text">
+                        <span class="brand-name">REHEMA</span>
+                        <span class="sub-name">Care Services</span>
+                    </div>
+                </a>
+                <ul id="nav-menu">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- =================== -->
+        <!-- ====== HOME ======= -->
+        <!-- =================== -->
+        <section id="home" class="hero">
+            <ul class="hero-slideshow">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="hero-overlay"></div>
+            <div class="hero-content container">
+                <h1 class="hero-title">REHEMA Care Services</h1>
+                <p class="tagline"><span class="editable" data-key="text_tagline">Caring with Compassion</span></p>
+                <p class="welcome-text"><span class="editable" data-key="home_welcome_text">Providing compassionate home care and community support services with professionalism and love.</span></p>
+                <div class="hero-buttons">
+                    <a href="services.html" class="btn btn-secondary">Our Services</a>
+                    <a href="contact.html" class="btn btn-primary">Contact Us</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- =================== -->
+    <!-- ====== FOOTER ===== -->
+    <!-- =================== -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>Rehema Care Services</h4>
+                    <p>Caring with Compassion</p>
+                </div>
+                <div class="footer-contact">
+                    <!-- IMPORTANT: Replace with your actual contact details -->
+                    <p><i class="fas fa-phone"></i> <span class="editable" data-key="text_phone">+1 (555) 123-4567</span></p>
+                    <p><i class="fas fa-envelope"></i> <span class="editable" data-key="text_email">contact@rehemacare.com</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="editable" data-key="text_address">123 Care Street, Healthville, USA</span></p>
+                </div>
+                <div class="footer-social">
+                    <!-- IMPORTANT: Replace '#' with your social media links -->
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p><a href="admin.html" style="color:#555; text-decoration:none;">Admin</a></p>
+                <p>&copy; 2026 Rehema Care Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu -->
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            // PASTE YOUR FIREBASE CONFIG HERE
+            // apiKey: "AIzaSy...",
+            // authDomain: "...",
+            // databaseURL: "...",
+            // projectId: "...",
+            // storageBucket: "...",
+            // messagingSenderId: "...",
+            // appId: "..."
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // Check for Custom Hero Background
+        const heroSection = document.getElementById('home');
+        
+        db.ref('home_hero_bg').on('value', (snapshot) => {
+            const bg = snapshot.val();
+            if (bg) {
+                heroSection.style.backgroundImage = `url('${bg}')`;
+            }
+        });
+
+        // Load Editable Text Content
+        document.querySelectorAll('.editable').forEach(element => {
+            const key = element.getAttribute('data-key');
+            db.ref(key).on('value', (snapshot) => {
+                if (snapshot.val()) {
+                    element.textContent = snapshot.val();
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

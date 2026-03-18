@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Rehema Care Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10L10 45H20V90H80V45H90L50 10Z" stroke="#005A9C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M50 75C50 75 30 60 30 45C30 35 38 30 50 40C62 30 70 35 70 45C70 60 50 75 50 75Z" fill="#4CAF50"/>
+                    </svg>
+                    <div class="logo-text">
+                        <span class="brand-name">REHEMA</span>
+                        <span class="sub-name">Care Services</span>
+                    </div>
+                </a>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="gallery.html" class="active">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="gallery">
+            <div class="container">
+                <h2>Gallery & Testimonials</h2>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Content will be loaded via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>Rehema Care Services</h4>
+                    <p>Caring with Compassion</p>
+                </div>
+                <div class="footer-contact">
+                    <p><i class="fas fa-phone"></i> <span class="editable" data-key="text_phone">+1 (555) 123-4567</span></p>
+                    <p><i class="fas fa-envelope"></i> <span class="editable" data-key="text_email">contact@rehemacare.com</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span class="editable" data-key="text_address">123 Care Street, Healthville, USA</span></p>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rehema Care Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Structure -->
+    <div id="lightbox" class="lightbox-overlay">
+        <span class="lightbox-close">&times;</span>
+        <a id="lightbox-download" class="lightbox-download" download title="Download"><i class="fas fa-download"></i></a>
+        <div id="lightbox-content" class="lightbox-content">
+            <!-- Image/Video will be injected here -->
+        </div>
+        <div id="lightbox-description" class="lightbox-description">
+            <!-- Description will be injected here -->
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            // PASTE YOUR FIREBASE CONFIG HERE
+            // apiKey: "AIzaSy...",
+            // authDomain: "...",
+            // databaseURL: "...",
+            // projectId: "...",
+            // storageBucket: "...",
+            // messagingSenderId: "...",
+            // appId: "..."
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => { navMenu.classList.toggle('show'); });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // --- Gallery Loading Logic ---
+        const galleryGrid = document.getElementById('galleryGrid');
+        
+        // Define Defaults (moved from HTML to here)
+        const defaultGallery = [
+            { type: 'image', src: 'https://images.pexels.com/photos/3768131/pexels-photo-3768131.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'A caregiver and senior citizen share a happy moment.' },
+            { type: 'testimonial', text: '"The care my mother received was exceptional. The caregivers from Rehema are truly compassionate and professional."', author: '- Jane D.' },
+            { type: 'image', src: 'https://images.pexels.com/photos/7551673/pexels-photo-7551673.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'Our professional caregiver assisting a client.' },
+            { type: 'image', src: 'https://images.pexels.com/photos/3845126/pexels-photo-3845126.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'Bringing joy and companionship to our clients.' },
+            { type: 'video', src: 'https://videos.pexels.com/video-files/4057335/4057335-sd_640_360_25fps.mp4', description: 'A short clip showing our community support activities.' }
+        ];
+
+        // Check Storage: If empty/null, use defaults
+        let galleryData = JSON.parse(localStorage.getItem('rehemaGallery'));
+        if (!galleryData) {
+            galleryData = defaultGallery;
+            localStorage.setItem('rehemaGallery', JSON.stringify(galleryData));
+        }
+
+        // Render Gallery
+        galleryData.forEach((item, index) => {
+            const src = item.src || item; 
+            const type = item.type || 'image';
+
+            if (type === 'testimonial') {
+                const testimonialCard = document.createElement('div');
+                testimonialCard.className = 'testimonial-card';
+                testimonialCard.innerHTML = `<p>${item.text}</p><h4>${item.author}</h4>`;
+                galleryGrid.appendChild(testimonialCard);
+                return; // Exit early for testimonials
+            }
+
+            // Create a container for images and videos
+            const mediaContainer = document.createElement('div');
+            mediaContainer.className = 'media-container';
+
+            let mediaElement;
+            if (type === 'video') {
+                mediaElement = document.createElement('video');
+                mediaElement.muted = true; // Mute for thumbnail preview
+
+                // Add the play icon overlay
+                const playIcon = document.createElement('div');
+                playIcon.className = 'play-icon-overlay';
+                playIcon.innerHTML = '<i class="fas fa-play"></i>';
+                mediaContainer.appendChild(playIcon);
+            } else { // type is 'image'
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                mediaContainer.appendChild(spinner);
+
+                mediaElement = document.createElement('img');
+                mediaElement.alt = "Gallery Upload";
+                mediaElement.style.opacity = '0';
+
+                mediaElement.onload = () => {
+                    spinner.remove();
+                    mediaElement.style.opacity = '1';
+                };
+                mediaElement.onerror = () => {
+                    // If image fails to load, just remove the spinner
+                    spinner.remove();
+                    mediaContainer.style.background = '#f0f0f0'; // Show a placeholder color
+                };
+            }
+            
+            mediaElement.src = src;
+            mediaContainer.appendChild(mediaElement);
+
+            // Add click listener to the container to open the lightbox
+            mediaContainer.addEventListener('click', () => {
+                openLightbox(item, index);
+            });
+            
+            galleryGrid.appendChild(mediaContainer);
+        });
+
+        // Load Editable Text Content
+        document.querySelectorAll('.editable').forEach(element => {
+            const key = element.getAttribute('data-key');
+            const savedText = localStorage.getItem(key);
+            if (savedText) {
+                element.textContent = savedText;
+            }
+        });
+
+        // --- Lightbox Logic ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxContent = document.getElementById('lightbox-content');
+        const lightboxClose = document.querySelector('.lightbox-close');
+        const lightboxDownload = document.getElementById('lightbox-download');
+        const lightboxDescription = document.getElementById('lightbox-description');
+
+        function openLightbox(item, index) {
+            lightboxContent.innerHTML = ''; // Clear previous content
+            lightboxDescription.textContent = ''; // Clear previous description
+            lightboxDownload.href = item.src; // Set download link
+
+            let contentElement;
+            if (item.type === 'video') {
+                contentElement = document.createElement('video');
+                contentElement.controls = true;
+                contentElement.autoplay = true;
+            } else {
+                contentElement = document.createElement('img');
+            }
+            contentElement.src = item.src;
+            
+            lightboxContent.appendChild(contentElement);
+
+            if (item.description) {
+                lightboxDescription.textContent = item.description;
+            }
+
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            lightboxContent.innerHTML = ''; // Stop video from playing in background
+            lightboxDescription.textContent = '';
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) { // Only close if overlay is clicked, not content
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Rehema Care Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="main-header">
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <svg width="50" height="50" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M50 10L10 45H20V90H80V45H90L50 10Z" stroke="#005A9C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M50 75C50 75 30 60 30 45C30 35 38 30 50 40C62 30 70 35 70 45C70 60 50 75 50 75Z" fill="#4CAF50"/>
+                    </svg>
+                    <div class="logo-text">
+                        <span class="brand-name">REHEMA</span>
+                        <span class="sub-name">Care Services</span>
+                    </div>
+                </a>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="gallery.html">Back to Gallery</a></li>
+                </ul>
+                <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="admin">
+            <div class="container">
+                <h2>Admin Panel</h2>
+
+                <!-- Sign Up Container (First Time Setup) -->
+                <div id="signup-container" class="login-container hidden">
+                    <h3>Set Admin Password</h3>
+                    <p>Create a password to access the admin panel.</p>
+                    <form id="signupForm">
+                        <input type="password" id="newPassword" placeholder="New Password" required>
+                        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                        <button type="submit" class="btn btn-primary">Set Password</button>
+                    </form>
+                    <p id="signup-error" style="color: red; margin-top: 1rem; display: none;">Passwords do not match</p>
+                </div>
+
+                <!-- Login Container -->
+                <div id="login-container" class="login-container hidden">
+                    <h3>Admin Login</h3>
+                    <form id="loginForm">
+                        <input type="password" id="password" placeholder="Enter Password" required>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <p id="login-error" style="color: red; margin-top: 1rem; display: none;">Incorrect Password</p>
+                    <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+                </div>
+
+                <div id="admin-content" class="admin-panel hidden">
+                    <div style="text-align: right; margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 1rem;">
+                        <button id="logoutBtn" class="btn btn-secondary" style="background-color: #555; font-size: 0.9rem; padding: 0.5rem 1.2rem;">Logout <i class="fas fa-sign-out-alt"></i></button>
+                    </div>
+
+                    <h3>Manage Website Media</h3>
+                    <p>Select a target and upload an image or video from your device.</p>
+                    <p style="color: #d32f2f; font-size: 0.9rem;"><strong>Note:</strong> Due to browser limits, please use files smaller than 3.5MB.</p>
+                    
+                    <form id="mediaForm">
+                        <label for="updateTarget"><strong>Target Section:</strong></label>
+                        <select id="updateTarget" style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;">
+                            <option value="gallery">Gallery - Add New Item</option>
+                            <option value="home_hero">Home Page - Hero Background Image</option>
+                        </select>
+
+                        <label for="fileInput"><strong>Select File:</strong></label>
+                        <input type="file" id="fileInput" accept="image/*,video/*" required>
+                        
+                        <label for="mediaDescription" style="margin-top: 1rem; display: block;"><strong>Description (optional):</strong></label>
+                        <textarea id="mediaDescription" rows="2" placeholder="A short description of the media..." style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins', sans-serif;"></textarea>
+
+                        <button type="submit" class="btn btn-primary">Upload & Save</button>
+                    </form>
+                    <br>
+                    <button id="clearStorage" class="btn btn-secondary" style="background-color: #d32f2f;">Clear All Custom Media</button>
+
+                    <hr style="margin: 2rem 0; border: 1px solid #ddd;">
+
+                    <h3>Manage Existing Gallery Items</h3>
+                    <div id="gallery-management-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <!-- Gallery items will be loaded here by JS -->
+                    </div>
+
+                    <hr style="margin: 2rem 0; border: 1px solid #ddd;">
+
+                    <h3>Manage Page Content</h3>
+                    <form id="contentForm">
+                        <label for="contentKey"><strong>Select Content to Edit:</strong></label>
+                        <select id="contentKey" style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;">
+                            <option value="home_welcome_text">Home: Welcome Text</option>
+                            <option value="text_tagline">Home: Tagline</option>
+                            <option value="text_phone">Global: Phone Number</option>
+                            <option value="text_email">Global: Email Address</option>
+                            <option value="text_address">Global: Physical Address</option>
+                            <option value="text_about_who">About: Who We Are</option>
+                            <option value="text_about_mission">About: Mission</option>
+                            <option value="text_about_vision">About: Vision</option>
+                        </select>
+
+                        <label for="welcomeText"><strong>Content Text:</strong></label>
+                        <textarea id="welcomeText" rows="4" style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc; font-family: 'Poppins', sans-serif;"></textarea>
+                        <button type="submit" class="btn btn-primary">Save Text</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h4>Rehema Care Services</h4>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rehema Care Services. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // --- Firebase Configuration ---
+        const firebaseConfig = {
+            // PASTE YOUR FIREBASE CONFIG HERE
+            // apiKey: "AIzaSy...",
+            // authDomain: "...",
+            // databaseURL: "...",
+            // projectId: "...",
+            // storageBucket: "...",
+            // messagingSenderId: "...",
+            // appId: "..."
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => { navMenu.classList.toggle('show'); });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('#nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+            });
+        });
+
+        // --- Authentication Logic ---
+        const signupContainer = document.getElementById('signup-container');
+        const loginContainer = document.getElementById('login-container');
+        const adminContent = document.getElementById('admin-content');
+        
+        const signupForm = document.getElementById('signupForm');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        const signupError = document.getElementById('signup-error');
+        const loginError = document.getElementById('login-error');
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
+        // Check if a password has been set in Firebase
+        db.ref('admin_password').once('value').then((snapshot) => {
+            const storedPassword = snapshot.val();
+            
+            if (!storedPassword) {
+                // No password set -> Show Signup
+                signupContainer.classList.remove('hidden');
+            } else {
+                // Password exists -> Check if logged in
+                if (sessionStorage.getItem('isAdminAuthenticated') === 'true') {
+                    adminContent.classList.remove('hidden');
+                } else {
+                    loginContainer.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Handle Sign Up
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+
+            if (newPass !== confirmPass) {
+                signupError.style.display = 'block';
+                return;
+            }
+
+            db.ref('admin_password').set(newPass).then(() => {
+                alert('Password set successfully! Please login.');
+                window.location.reload();
+            });
+        });
+
+        // Admin Logic
+        const mediaForm = document.getElementById('mediaForm');
+        const fileInput = document.getElementById('fileInput');
+        const updateTarget = document.getElementById('updateTarget');
+        const clearStorageBtn = document.getElementById('clearStorage');
+        const contentForm = document.getElementById('contentForm');
+        const welcomeTextArea = document.getElementById('welcomeText');
+        const contentKeySelector = document.getElementById('contentKey');
+        const galleryManagementContainer = document.getElementById('gallery-management-container');
+
+        // Handle Login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const passwordInput = document.getElementById('password').value;
+            
+            db.ref('admin_password').once('value').then((snapshot) => {
+                const savedPassword = snapshot.val();
+                if (passwordInput === savedPassword) {
+                    loginContainer.classList.add('hidden');
+                    adminContent.classList.remove('hidden');
+                    sessionStorage.setItem('isAdminAuthenticated', 'true');
+                } else {
+                    loginError.style.display = 'block';
+                }
+            });
+        });
+
+        // Handle Logout
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('isAdminAuthenticated');
+            window.location.reload();
+        });
+
+        // Handle Forgot Password
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (confirm('Are you sure you want to reset your password? This will allow you to set a new one.')) {
+                db.ref('admin_password').remove().then(() => {
+                    alert('Password has been reset. The page will now reload, and you can set a new password.');
+                    window.location.reload();
+                });
+            }
+        });
+        // --- End Authentication Logic ---
+
+        // --- Gallery Management Logic ---
+        const renderGalleryItems = () => {
+            // Define Defaults to ensure they exist if storage is empty (First run)
+            const defaultGallery = [
+                { type: 'image', src: 'https://images.pexels.com/photos/3768131/pexels-photo-3768131.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'A caregiver and senior citizen share a happy moment.' },
+                { type: 'testimonial', text: '"The care my mother received was exceptional. The caregivers from Rehema are truly compassionate and professional."', author: '- Jane D.' },
+                { type: 'image', src: 'https://images.pexels.com/photos/7551673/pexels-photo-7551673.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'Our professional caregiver assisting a client.' },
+                { type: 'image', src: 'https://images.pexels.com/photos/3845126/pexels-photo-3845126.jpeg?auto=compress&cs=tinysrgb&w=600', description: 'Bringing joy and companionship to our clients.' },
+                { type: 'video', src: 'https://videos.pexels.com/video-files/4057335/4057335-sd_640_360_25fps.mp4', description: 'A short clip showing our community support activities.' }
+            ];
+
+            // Fetch gallery from Firebase
+            db.ref('rehemaGallery').once('value').then((snapshot) => {
+                let gallery = snapshot.val();
+                
+                if (!gallery) {
+                    gallery = defaultGallery;
+                    // Don't auto-save defaults to DB to keep it clean, just display them
+                }
+
+                galleryManagementContainer.innerHTML = ''; // Clear current items
+
+                if (gallery.length === 0) {
+                    galleryManagementContainer.innerHTML = '<p>No custom gallery items to display.</p>';
+                    return;
+                }
+
+                gallery.forEach((item, index) => {
+                    const itemContainer = document.createElement('div');
+                    itemContainer.style.position = 'relative';
+                    itemContainer.style.border = '1px solid #ccc';
+                    itemContainer.style.borderRadius = '8px';
+                    itemContainer.style.background = '#fff';
+
+                    let mediaElement;
+                    if (item.type === 'video') {
+                        mediaElement = document.createElement('video');
+                        mediaElement.src = item.src;
+                        mediaElement.style.width = '100%';
+                        mediaElement.style.height = '100px';
+                        mediaElement.style.objectFit = 'cover';
+                    } else if (item.type === 'testimonial') {
+                        mediaElement = document.createElement('div');
+                        mediaElement.style.padding = '10px';
+                        mediaElement.style.fontSize = '0.8rem';
+                        mediaElement.innerHTML = `<em>${item.text.substring(0, 50)}...</em>`;
+                    } else {
+                        mediaElement = document.createElement('img');
+                        mediaElement.src = item.src;
+                        mediaElement.style.width = '100%';
+                        mediaElement.style.height = '100px';
+                        mediaElement.style.objectFit = 'cover';
+                    }
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '&times;';
+                    deleteButton.style.position = 'absolute';
+                    deleteButton.style.top = '5px';
+                    deleteButton.style.right = '5px';
+                    deleteButton.style.background = 'rgba(255, 0, 0, 0.8)';
+                    deleteButton.style.color = 'white';
+                    deleteButton.style.border = 'none';
+                    deleteButton.style.borderRadius = '50%';
+                    deleteButton.style.width = '25px';
+                    deleteButton.style.height = '25px';
+                    deleteButton.style.cursor = 'pointer';
+                    deleteButton.style.fontSize = '16px';
+                    deleteButton.style.lineHeight = '25px';
+                    deleteButton.dataset.index = index;
+
+                    deleteButton.onclick = () => deleteGalleryItem(index);
+
+                    itemContainer.appendChild(mediaElement);
+                    itemContainer.appendChild(deleteButton);
+
+                    if (item.type === 'image' || item.type === 'video') {
+                        const descriptionPreview = document.createElement('p');
+                        descriptionPreview.textContent = item.description ? item.description.substring(0, 40) + '...' : 'No description';
+                        descriptionPreview.style.fontSize = '0.7rem';
+                        descriptionPreview.style.padding = '5px';
+                        descriptionPreview.style.margin = '0';
+                        descriptionPreview.style.textAlign = 'center';
+                        itemContainer.appendChild(descriptionPreview);
+                    }
+                    galleryManagementContainer.appendChild(itemContainer);
+                });
+            });
+        };
+
+        const deleteGalleryItem = (index) => {
+            if (confirm('Are you sure you want to delete this item?')) {
+                db.ref('rehemaGallery').once('value').then((snapshot) => {
+                    const currentGallery = snapshot.val() || [];
+                    currentGallery.splice(index, 1);
+                    db.ref('rehemaGallery').set(currentGallery).then(() => {
+                        renderGalleryItems();
+                    });
+                });
+            }
+        };
+        // --- End Gallery Management Logic ---
+
+        // Function to load text based on selection
+        const loadSelectedText = () => {
+            const key = contentKeySelector.value;
+            db.ref(key).once('value').then((snapshot) => {
+                welcomeTextArea.value = snapshot.val() || '';
+            });
+        };
+
+        // Load existing custom content on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSelectedText();
+            renderGalleryItems();
+        });
+
+        // Reload text when dropdown changes
+        contentKeySelector.addEventListener('change', loadSelectedText);
+
+        contentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const key = contentKeySelector.value;
+            db.ref(key).set(welcomeTextArea.value).then(() => {
+                alert('Content updated successfully!');
+            });
+        });
+
+        mediaForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            // Size Check (approx 3.5MB limit to fit in localStorage)
+            if (file.size > 3.5 * 1024 * 1024) {
+                alert("File is too large! Please select a file smaller than 3.5MB.");
+                return;
+            }
+
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const base64Data = event.target.result;
+                const target = updateTarget.value;
+                const type = file.type.startsWith('video') ? 'video' : 'image';
+                const description = document.getElementById('mediaDescription').value;
+
+                try {
+                    if (target === 'gallery') {
+                        db.ref('rehemaGallery').once('value').then((snapshot) => {
+                            const gallery = snapshot.val() || [];
+                            gallery.push({ type: type, src: base64Data, description: description });
+                            db.ref('rehemaGallery').set(gallery).then(() => {
+                                alert('Added to Gallery successfully!');
+                                renderGalleryItems(); 
+                            });
+                        });
+                    } else if (target === 'home_hero') {
+                        if (type === 'video') { alert('Hero section only supports images.'); return; }
+                        db.ref('home_hero_bg').set(base64Data).then(() => alert('Home Hero background updated!'));
+                    }
+                    mediaForm.reset();
+                } catch (err) {
+                    alert("Storage quota exceeded! File is too large or storage is full.");
+                    console.error(err);
+                }
+            };
+
+            reader.readAsDataURL(file);
+        });
+
+        clearStorageBtn.addEventListener('click', function() {
+            if(!confirm("Are you sure? This will delete all custom content from the Cloud.")) return;
+
+            const updates = {};
+            updates['rehemaGallery'] = null;
+            updates['home_hero_bg'] = null;
+            updates['home_welcome_text'] = null;
+            const keys = ['text_tagline', 'text_phone', 'text_email', 'text_address', 'text_about_who', 'text_about_mission', 'text_about_vision'];
+            keys.forEach(key => updates[key] = null);
+
+            db.ref().update(updates).then(() => {
+                alert('All custom media and text cleared from the cloud.');
+                welcomeTextArea.value = '';
+                renderGalleryItems();
+            });
+        });
+    </script>
+</body>
+</html>
